@@ -2,16 +2,24 @@ var request = require('request'),
 	util = require('../util')
 
 module.exports = (param) => {
-	var	channel	= param.channel,
-	endpoint = param.commandConfig.endpoint
 
-	request.post(endpoint, (err, res) => {
-		var info = 'Send users data!'
+    var data = param.args,
+        user = data[0],
+        myRegexp = /\<@(.*?)\>/g,
+        match = myRegexp.exec(user),
+        username = match[1] 
+	    
+   util.getUserInfo(username, (users) => {
+         var options = {
+            url: 'http://localhost:1337/getUsers',
+            method: 'POST',
+            form: users
+        }
 
-		if (err) {
-			info = 'No users data!'			
-		}
-
-		util.postMessage(channel, info)
-	})	
+       request.post(options, (err, res, body) => {
+            if (!err && res.ok) {
+                console.log(body)
+            }
+	    })
+   })
 }

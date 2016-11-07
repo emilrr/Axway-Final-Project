@@ -1,13 +1,13 @@
 var webClient = require('slack-terminalize').getWebClient();
-/**
- * Wrapper function for postMessage from slack-client to handle formatting.
- * 
- * @param  { object } slack-client Channel boject
- * @param  { string } message to send to Slack channel
- * @param  { boolean } flag to indicate block formatting
- * @return { none }
- * 
- */
+
+var getUser = (username, callBack) => {
+	webClient.users.list(username, function (err, res) {
+		if (!err && res.ok) {
+            callBack(res.members)
+		}
+	});
+}
+
 var postMessage = (channel, response, format) => {
 
 	format = format || true;
@@ -20,4 +20,7 @@ var postMessage = (channel, response, format) => {
 
 };
 
-exports.postMessage = postMessage;
+module.exports = {
+	postMessage: postMessage,
+	getUserInfo: getUser
+};

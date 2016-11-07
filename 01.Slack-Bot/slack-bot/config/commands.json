@@ -1,6 +1,8 @@
-{	
+{
     "getUsers": {
-		"endpoint": "http://localhost:1337/getUsers",
-		"description": "POST request"
-    }
-}
+        "alias": [ "getusers" ],
+        "endpoint": "#",
+        "help": "help [command](optional)",
+        "description": ""
+      }
+  }
