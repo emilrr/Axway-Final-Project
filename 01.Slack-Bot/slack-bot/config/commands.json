@@ -1,0 +1,6 @@
+{	
+    "getUsers": {
+		"endpoint": "http://localhost:1337/getUsers",
+		"description": "POST request"
+    }
+}
