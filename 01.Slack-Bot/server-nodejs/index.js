@@ -1,19 +1,15 @@
 const express = require('express')
-var bodyParser = require('body-parser')
-var slackUsers = require('slack-users');
+var bodyParser = require('body-parser'),
+    slackUsers = require('slack-users');
 
 let app = express()
 var port = process.env.PORT || 1337;
 
-var options = {
-  team: 'teamname',
-  token: 'xoxb-...'
-};
-
-app.use(bodyParser.urlencoded({ extended: true }))
-
 app.set('view engine', 'pug')
 app.set('index', 'views')
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
    //res.send('Message from GET!')
@@ -26,14 +22,17 @@ app.post('/', (req, res) => {
 })
 
 app.post('/getUsers', (req, res) => {
-    slackUsers(options, (err, users) => {
-    if (err) return console.error(err)
+    var users = req.body
 
-    users.forEach((user) => {
-          console.log("Username: " + user.name + "\nEmail: " + user.profile.email)
-          console.log("--------------------------------------------")
-      })
-  })
+    for(var key in req.body) {
+        if(req.body.hasOwnProperty(key)){
+            var username = req.body[key].name,
+                email = req.body[key].profile.email
+
+            console.log("Username: " + username + "\nEmail: " + email)
+            console.log("--------------------------------------------")
+        }
+    }
   
   res.end()
 })
